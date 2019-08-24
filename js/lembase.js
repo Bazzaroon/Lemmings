@@ -7,16 +7,19 @@ class LemBase extends Phaser.GameObjects.Sprite{
         this.setTexture('lemming');
         this.setPosition(x,y);
         this.scene = scene;
-        this.create();
         this.speed = 0.5;
         this.vpos = 0;
         this.setInteractive();
         this.animation = 'walking';
         this.animStarted = false;
+        this.hasboinged = true;
+
+        this.create();
+
     }
     
     create(){
-       
+
         var config = {
             key:'walking',
             frames:this.scene.anims.generateFrameNumbers('lemming', { start:0, end:12}),
@@ -69,13 +72,18 @@ class LemBase extends Phaser.GameObjects.Sprite{
         }
         if(this.y > this.vpos){
             this.anims.stop();
-         } 
+            if(this.y > (this.vpos + 50) && !this.hasboinged){
+                this.scene.oing.play();
+                this.hasboinged = true;
+            }
+        } 
         
 
     }
     walkon(obj,obj2){
         obj.anims.play(this.animation, true);
         this.vpos = this.y;
+        this.hasboinged = false;
     }
 
     setLemmingType(pointer, gameObject){
@@ -83,6 +91,8 @@ class LemBase extends Phaser.GameObjects.Sprite{
             this.animation = 'blockstart';
             this.anims.play('blockstart', true);
             this.name = 'blocker';
+            this.scene.oing.play();
+            
             this.bcol = this.scene.physics.add.collider(this, this.scene.lems, this.changedirection, null, this);
         } else {
             if(gameObject[0].name == 'blocker' && this.data == gameObject[0].data){

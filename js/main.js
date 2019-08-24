@@ -9,16 +9,30 @@ class Main extends Phaser.Scene{
         this.load.spritesheet('blocker', 'Assets/Sprites/blocker.png',{frameWidth:100, frameHeight:113});
         this.load.image('ground', 'Assets/Images/ground.png');
         this.load.image('ball', 'Assets/Images/ball.png');
+        this.load.audio('letsgo', 'Assets/Sounds/letsgo.wav');
+        this.load.audio('music', 'Assets/Sounds/bgmusic.mp3');
+        this.load.audio('yippee', 'Assets/Sounds/yippee.wav');
+        this.load.audio('oing', 'Assets/Sounds/oing.wav');
     };
 
     create(){
-         this.cameras.main.setBackgroundColor('#74c6e0');
+        this.cameras.main.setBackgroundColor('#74c6e0');
 
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(180, 633, 'ground').refreshBody;
         this.platforms.create(40, 200, 'ground').refreshBody;
         this.platforms.create(280, 300, 'ground').refreshBody;
         this.platforms.create(40, 450, 'ground').refreshBody;
+
+        var letsgo = this.sound.add('letsgo');
+        var music = this.sound.add('music',{volume:0.2});
+        this.yippee = this.sound.add('yippee');
+        this.oing = this.sound.add('oing');
+
+        letsgo.play();
+        //music.play();
+        //this.yippee.play();
+
 
         var T = this.time.addEvent({
             delay:1000,
@@ -55,13 +69,13 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            debug: false,
             gravity: {
                 y:100
             }
         }
     },
-    scene: [Main]
+    scene: [Splash, Main]
     
 };
 
