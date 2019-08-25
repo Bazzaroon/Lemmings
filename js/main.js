@@ -7,6 +7,8 @@ class Main extends Phaser.Scene{
     preload(){
         this.load.spritesheet('lemming', 'Assets/Sprites/lemmings2.png',{frameWidth:38, frameHeight:38});
         this.load.spritesheet('blocker', 'Assets/Sprites/blocker.png',{frameWidth:100, frameHeight:113});
+        this.load.spritesheet('blocker', 'Assets/Sprites/blocker.png',{frameWidth:100, frameHeight:113});
+        this.load.spritesheet('brolly', 'Assets/Sprites/brolly.png', {frameWidth:36, frameHeight:53});
         this.load.image('ground', 'Assets/Images/ground.png');
         this.load.image('ball', 'Assets/Images/ball.png');
         this.load.audio('letsgo', 'Assets/Sounds/letsgo.wav');

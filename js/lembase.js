@@ -56,6 +56,14 @@ class LemBase extends Phaser.GameObjects.Sprite{
 
         },this);
 
+        this.scene.anims.create(
+            {
+                key:'brolly',
+                frames:this.scene.anims.generateFrameNumbers('brolly', { start:0, end:4}),
+                frameRate:17,
+                repeat:0
+        },this);
+
         this.scene.input.on('pointerdown', this.setLemmingType, this);
 
         this.on('animationcomplete', function(err, obj){
@@ -68,6 +76,8 @@ class LemBase extends Phaser.GameObjects.Sprite{
 
     preUpdate(time,delta){
         super.preUpdate(time,delta);
+
+        if(this.anims == undefined) return;
         if(this.anims.isPlaying && this.animation == 'walking'){
             this.setPosition(this.x += this.speed, this.y);
         }
@@ -81,9 +91,9 @@ class LemBase extends Phaser.GameObjects.Sprite{
         }
         if(this.y > this.vpos){
             this.anims.stop();
-            if(this.y > (this.vpos + 50) && !this.hasboinged){
-                this.scene.oing.play();
+            if(this.y > (this.vpos + 70) && !this.hasboinged){
                 this.anims.play('die');
+                this.animation = 'die';
                 this.hasboinged = true;
             }
         } 
@@ -94,6 +104,13 @@ class LemBase extends Phaser.GameObjects.Sprite{
         obj.anims.play(this.animation, true);
         this.vpos = this.y;
         this.hasboinged = false;
+        if(this.anims.currentAnim.key == 'die'){
+            this.on('animationcomplete', function(anim, frame){
+                if(frame.index >= 7){
+                    this.destroy();
+                }
+            },this)
+        }
     }
 
     setLemmingType(pointer, gameObject){
