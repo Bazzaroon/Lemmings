@@ -91,9 +91,11 @@ class LemBase extends Phaser.GameObjects.Sprite{
         }
         if(this.y > this.vpos){
             this.anims.stop();
+            
             if(this.y > (this.vpos + 70) && !this.hasboinged){
                 this.anims.play('die');
                 this.animation = 'die';
+                this.scene.yippee.play();
                 this.hasboinged = true;
             }
         } 
@@ -107,6 +109,7 @@ class LemBase extends Phaser.GameObjects.Sprite{
         if(this.anims.currentAnim.key == 'die'){
             this.on('animationcomplete', function(anim, frame){
                 if(frame.index >= 7){
+                    if(obj.scene != undefined){ obj.scene.diesound.play()};
                     this.destroy();
                 }
             },this)

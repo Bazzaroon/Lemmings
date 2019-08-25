@@ -15,6 +15,7 @@ class Main extends Phaser.Scene{
         this.load.audio('music', 'Assets/Sounds/bgmusic.mp3');
         this.load.audio('yippee', 'Assets/Sounds/yippee.wav');
         this.load.audio('oing', 'Assets/Sounds/oing.wav');
+        this.load.audio('die', 'Assets/Sounds/die.wav');
     };
 
     create(){
@@ -30,6 +31,7 @@ class Main extends Phaser.Scene{
         var music = this.sound.add('music',{volume:0.2});
         this.yippee = this.sound.add('yippee');
         this.oing = this.sound.add('oing');
+        this.diesound = this.sound.add('die');
 
         letsgo.play();
         //music.play();
