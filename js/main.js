@@ -37,7 +37,7 @@ class Main extends Phaser.Scene{
         var T = this.time.addEvent({
             delay:1000,
             callback:this.dropLemming,
-            repeat:12,
+            repeat:2,
             callbackScope:this,
         }, this);
         
@@ -52,8 +52,9 @@ class Main extends Phaser.Scene{
 
     dropLemming(){
         this.lems.push(new LemBase(this, 30, 50));
-        this.lems[this.lems.length-1].data = 'L' + String(this.lems.length-1);
+        this.lems[this.lems.length-1].setData('L' + String(this.lems.length-1));
         this.lems[this.lems.length-1].name = 'walker';
+        this.lems[this.lems.length-1].setInteractive();
         //this.physics.add.collider(this.lems[this.lems.length-1], this.platforms);
 
     };

@@ -45,7 +45,16 @@ class LemBase extends Phaser.GameObjects.Sprite{
                 frames:this.scene.anims.generateFrameNumbers('lemming',{ start:19, end:32}),
                 frameRate:17,
                 repeat:-1
-            }, this);    
+            }, this);
+            
+        this.scene.anims.create(
+            {
+                key:'die',
+                frames:this.scene.anims.generateFrameNumbers('lemming', {start:33, end:39}),
+                frameRate:17,
+                repeat:0
+
+        },this);
 
         this.scene.input.on('pointerdown', this.setLemmingType, this);
 
@@ -74,6 +83,7 @@ class LemBase extends Phaser.GameObjects.Sprite{
             this.anims.stop();
             if(this.y > (this.vpos + 50) && !this.hasboinged){
                 this.scene.oing.play();
+                this.anims.play('die');
                 this.hasboinged = true;
             }
         } 
