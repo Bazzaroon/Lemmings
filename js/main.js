@@ -2,12 +2,11 @@ class Main extends Phaser.Scene{
     constructor(){
         super('Main');
         this.lems = [];
-    };
+        this.src = ['digger-idle','blocker-idle','brolly-idle'];
+     };
 
     preload(){
         this.load.spritesheet('lemming', 'Assets/Sprites/lemmings2.png',{frameWidth:38, frameHeight:38});
-        this.load.spritesheet('blocker', 'Assets/Sprites/blocker.png',{frameWidth:100, frameHeight:113});
-        this.load.spritesheet('blocker', 'Assets/Sprites/blocker.png',{frameWidth:100, frameHeight:113});
         this.load.spritesheet('brolly', 'Assets/Sprites/brolly.png', {frameWidth:36, frameHeight:53});
         this.load.image('ground', 'Assets/Images/ground.png');
         this.load.image('ball', 'Assets/Images/ball.png');
@@ -16,6 +15,11 @@ class Main extends Phaser.Scene{
         this.load.audio('yippee', 'Assets/Sounds/yippee.wav');
         this.load.audio('oing', 'Assets/Sounds/oing.wav');
         this.load.audio('die', 'Assets/Sounds/die.wav');
+        
+
+        for(var p=0;p<this.src.length;p++){
+            this.load.image(this.src[p], "Assets/Images/controlimages/" + this.src[p] + '.png');
+        }
     };
 
     create(){
@@ -34,8 +38,8 @@ class Main extends Phaser.Scene{
         this.diesound = this.sound.add('die');
 
         letsgo.play();
-        //music.play();
-        //this.yippee.play();
+        
+        this.test = new Control(this);
 
 
         var T = this.time.addEvent({
