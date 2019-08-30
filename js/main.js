@@ -2,8 +2,9 @@ class Main extends Phaser.Scene{
     constructor(){
         super('Main');
         this.lems = [];
-        this.src = ['digger-idle','blocker-idle','brolly-idle'];
-     };
+        this.src = ['digger-idle','blocker-idle','brolly-idle','digger-active','blocker-active','brolly-active'];
+        this.activeWorker = '';
+    };
 
     preload(){
         this.load.spritesheet('lemming', 'Assets/Sprites/lemmings2.png',{frameWidth:38, frameHeight:38});
@@ -15,6 +16,7 @@ class Main extends Phaser.Scene{
         this.load.audio('yippee', 'Assets/Sounds/yippee.wav');
         this.load.audio('oing', 'Assets/Sounds/oing.wav');
         this.load.audio('die', 'Assets/Sounds/die.wav');
+        this.load.image('gamebg', 'Assets/Images/gamebg.png');
         
 
         for(var p=0;p<this.src.length;p++){
@@ -24,6 +26,9 @@ class Main extends Phaser.Scene{
 
     create(){
         this.cameras.main.setBackgroundColor('#74c6e0');
+        this.bg = this.add.image(190, 330, 'gamebg');
+        this.bg.setInteractive();
+        this.bg.name = 'background';
 
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(180, 633, 'ground').refreshBody;
@@ -45,7 +50,7 @@ class Main extends Phaser.Scene{
         var T = this.time.addEvent({
             delay:1000,
             callback:this.dropLemming,
-            repeat:2,
+            repeat:0,
             callbackScope:this,
         }, this);
         
