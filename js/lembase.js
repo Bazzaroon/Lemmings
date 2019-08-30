@@ -117,19 +117,21 @@ class LemBase extends Phaser.GameObjects.Sprite{
     }
 
     setLemmingType(pointer, gameObject){
-        if(gameObject[0].name == 'walker' && this.data == gameObject[0].data){
-            this.animation = 'blockstart';
-            this.anims.play('blockstart', true);
-            this.name = 'blocker';
-            this.scene.oing.play();
-            
-            this.bcol = this.scene.physics.add.collider(this, this.scene.lems, this.changedirection, null, this);
-        } else {
-            if(gameObject[0].name == 'blocker' && this.data == gameObject[0].data){
-                this.animation = 'walking';
-                this.anims.play('walking', true);
-                this.name = 'walker';
-                this.bcol.destroy();
+        if(gameObject.length > 0){
+            if(gameObject[0].name == 'walker' && this.data == gameObject[0].data){
+                this.animation = 'blockstart';
+                this.anims.play('blockstart', true);
+                this.name = 'blocker';
+                this.scene.oing.play();
+                
+                this.bcol = this.scene.physics.add.collider(this, this.scene.lems, this.changedirection, null, this);
+            } else {
+                if(gameObject[0].name == 'blocker' && this.data == gameObject[0].data){
+                    this.animation = 'walking';
+                    this.anims.play('walking', true);
+                    this.name = 'walker';
+                    this.bcol.destroy();
+            }
         }
     }
 
