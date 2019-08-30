@@ -13,9 +13,7 @@ class LemBase extends Phaser.GameObjects.Sprite{
         this.animation = 'walking';
         this.animStarted = false;
         this.hasboinged = true;
-
-        this.create();
-
+         this.create();
     }
     
     create(){
@@ -58,13 +56,13 @@ class LemBase extends Phaser.GameObjects.Sprite{
 
         this.scene.anims.create(
             {
-                key:'brolly',
+                key:'floater',
                 frames:this.scene.anims.generateFrameNumbers('brolly', { start:0, end:4}),
                 frameRate:17,
                 repeat:0
         },this);
 
-        this.scene.input.on('pointerdown', this.setLemmingType, this);
+        this.scene.input.on('pointerdown', this.setWorker, this);
 
         this.on('animationcomplete', function(err, obj){
             if(this.animation == 'blockstart'){
@@ -92,7 +90,7 @@ class LemBase extends Phaser.GameObjects.Sprite{
         if(this.y > this.vpos){
             this.anims.stop();
             
-            if(this.y > (this.vpos + 70) && !this.hasboinged){
+            if(this.y > (this.vpos + 70) && !this.hasboinged && this.name == 'walker'){
                 this.anims.play('die');
                 this.animation = 'die';
                 this.scene.yippee.play();
@@ -116,17 +114,40 @@ class LemBase extends Phaser.GameObjects.Sprite{
         }
     }
 
-    setLemmingType(pointer, gameObject){
-        if(gameObject.length > 0){
-            if(gameObject[0].name == 'walker' && this.data == gameObject[0].data){
+    TouchControl(pointer, gameObject){
+
+
+    }
+    
+    setWorker(pointer, gameObject){
+
+        if(gameObject[0].name == 'walker') {
+            switch(this.scene.activeWorker){
+                case 'blocker-active':
+                    this.setBlocker(gameObject[0]);
+                    this.scene.test.close();
+                    break;
+                case 'brolly-active':
+                    this.setFloater(gameObject[0]);
+                    this.scene.test.close();
+                    break;    
+            }
+        } else {
+            if(gameObject[0].name == 'blocker'){
+                this.setBlocker(gameObject[0]);
+            }
+        }
+    }
+
+    setBlocker(gObj){
+            if(gObj.name == 'walker' && this.data == gObj.data){
                 this.animation = 'blockstart';
                 this.anims.play('blockstart', true);
                 this.name = 'blocker';
-                this.scene.oing.play();
-                
+                 
                 this.bcol = this.scene.physics.add.collider(this, this.scene.lems, this.changedirection, null, this);
             } else {
-                if(gameObject[0].name == 'blocker' && this.data == gameObject[0].data){
+                if(gObj.name == 'blocker' && this.data == gObj.data){
                     this.animation = 'walking';
                     this.anims.play('walking', true);
                     this.name = 'walker';
@@ -135,7 +156,15 @@ class LemBase extends Phaser.GameObjects.Sprite{
         }
     }
 
+    setFloater(gObj){
+        if(gObj.name == 'walker'){
+            this.animation = 'floater';
+            this.anims.play('floater', true);
+            this.name = 'floater';
+        }
     }
+
+    
     changedirection(a,b){
         if(b.name == 'walker'){
             b.toggleFlipX();
