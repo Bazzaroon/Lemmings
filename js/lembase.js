@@ -6,6 +6,7 @@ class LemBase extends Phaser.GameObjects.Sprite{
         scene.physics.add.existing(this);
         this.setTexture('lemming');
         this.setPosition(x,y);
+        this.body.offset.x = 5;
         this.scene = scene;
         this.speed = 0.5;
         this.vpos = 0;
@@ -28,7 +29,8 @@ class LemBase extends Phaser.GameObjects.Sprite{
         this.scene.anims.create(config);
 
         this.wCollider = this.scene.physics.add.collider(this, this.scene.platforms, this.walkon, null, this);
- 
+        this.wallcollider = this.scene.physics.add.collider(this, this.scene.wall, this.changedirection, null, this);
+        
         this.scene.anims.create(
             { 
                 key:'blockstart', 
@@ -161,14 +163,24 @@ class LemBase extends Phaser.GameObjects.Sprite{
             this.animation = 'floater';
             this.anims.play('floater', true);
             this.name = 'floater';
+            this.body.offset.y = 15;
+            this.on('animationcomplete', function(anim, frame){
+                if(frame.index >= 4){
+                    this.animation = 'walking';
+                    this.anims.play('walking', true);
+                    this.body.offset.y = 0;
+                    this.name = 'walker';
+                }
+            }, this);
+
         }
     }
 
     
     changedirection(a,b){
-        if(b.name == 'walker'){
-            b.toggleFlipX();
-            b.speed = -this.speed;
+        if(a.name == 'walker'){
+            this.toggleFlipX();
+            this.speed = -this.speed;
         }
     }
 

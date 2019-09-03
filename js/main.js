@@ -17,6 +17,8 @@ class Main extends Phaser.Scene{
         this.load.audio('oing', 'Assets/Sounds/oing.wav');
         this.load.audio('die', 'Assets/Sounds/die.wav');
         this.load.image('gamebg', 'Assets/Images/gamebg.png');
+        this.load.image('obstacle', 'Assets/Images/obstacle.png');
+        this.load.image('groundshort', 'Assets/Images/groundshort.png');
         
 
         for(var p=0;p<this.src.length;p++){
@@ -30,12 +32,16 @@ class Main extends Phaser.Scene{
         this.bg.setInteractive();
         this.bg.name = 'background';
 
-        this.platforms = this.physics.add.staticGroup();
+        this.platforms = this.matter.add.staticGroup();
         this.platforms.create(180, 633, 'ground').refreshBody;
         this.platforms.create(40, 200, 'ground').refreshBody;
-        this.platforms.create(280, 300, 'ground').refreshBody;
+        this.platforms.create(280, 410, 'ground').refreshBody;
         this.platforms.create(40, 450, 'ground').refreshBody;
+        this.platforms.create(150,555, 'groundshort').refreshBody;
 
+        this.wall = this.physics.add.staticImage(150,350,'obstacle');
+        //this.wall.body.allowGravity = false;
+        
         var letsgo = this.sound.add('letsgo');
         var music = this.sound.add('music',{volume:0.2});
         this.yippee = this.sound.add('yippee');
@@ -50,7 +56,7 @@ class Main extends Phaser.Scene{
         var T = this.time.addEvent({
             delay:1000,
             callback:this.dropLemming,
-            repeat:0,
+            repeat:3,
             callbackScope:this,
         }, this);
         
@@ -68,8 +74,7 @@ class Main extends Phaser.Scene{
         this.lems[this.lems.length-1].setData('L' + String(this.lems.length-1));
         this.lems[this.lems.length-1].name = 'walker';
         this.lems[this.lems.length-1].setInteractive();
-        //this.physics.add.collider(this.lems[this.lems.length-1], this.platforms);
-
+        
     };
 
 
@@ -81,9 +86,9 @@ var config = {
     width:375,
     height:660,
     physics: {
-        default: 'arcade',
+        default: 'matter',
         arcade: {
-            debug: false,
+            debug: true,
             gravity: {
                 y:100
             }
